@@ -2,6 +2,10 @@ import { notFound } from 'next/navigation'
 import { products } from '@/lib/data'
 import { Metadata } from 'next'
 
+export function generateStaticParams() {
+  return products.map(p => ({ slug: p.slug }))
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const p = products.find(x=>x.slug===params.slug)
   if(!p) return { title: 'Produkts' }
