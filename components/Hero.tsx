@@ -5,7 +5,7 @@ export default function Hero(){
     <section className="section bg-[var(--muted)]">
       <div className="container grid md:grid-cols-2 items-center gap-10">
         <div>
-          <h1 className="h1 mb-4">PVC logi, žalūzijas un piederumi</h1>
+          <h1 className="h1 mb-4">Alumīnija logi, žalūzijas un piederumi</h1>
           <p className="text-lg text-gray-600 mb-6">Augstas kvalitātes risinājumi</p>
           <Link
             href="#katalogs"
