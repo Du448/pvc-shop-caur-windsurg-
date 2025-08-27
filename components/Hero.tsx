@@ -2,20 +2,36 @@ import Link from 'next/link'
 
 export default function Hero(){
   return (
-    <section className="section bg-[var(--muted)]">
-      <div className="container grid md:grid-cols-2 items-center gap-10">
-        <div>
-          <h1 className="h1 mb-4">Alumīnija logi, žalūzijas un piederumi</h1>
-          <p className="text-lg text-gray-600 mb-6">Augstas kvalitātes risinājumi</p>
+    <section className="relative h-[70vh] md:h-screen flex items-center overflow-hidden">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/PVC%20logi%201.jpg?updatedAt=1756312238304')" }}
+      />
+      {/* Background video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="https://ik.imagekit.io/vbvwdejj5/Morning_Sunlight_Bedroom_Video.mp4?updatedAt=1756315486415"
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden="true"
+        preload="metadata"
+      />
+      {/* Overlay removed to keep original video colors */}
+
+      <div className="relative container">
+        <div className="max-w-2xl">
+          <h1 className="h1 mb-4 text-blue-300">Alumīnija logi, žalūzijas un piederumi</h1>
+          <p className="text-lg mb-6 text-blue-300">Augstas kvalitātes risinājumi</p>
           <Link
             href="#katalogs"
             className="btn !bg-blue-600 hover:!bg-blue-700 focus:!ring-2 focus:!ring-blue-300"
-            style={{ backgroundColor: '#2563eb' }}
           >
             Skatīt produktus
           </Link>
         </div>
-        <div className="h-64 md:h-80 bg-cover bg-center rounded-lg shadow-md" style={{backgroundImage:"url('https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop')"}} />
       </div>
     </section>
   )

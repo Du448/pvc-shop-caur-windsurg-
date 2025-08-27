@@ -12,13 +12,22 @@ export default function Header(){
         <Link href="/" className="font-bold text-brand-teal">LOGO</Link>
         {/* Desktop nav */}
         <nav className="hidden md:flex gap-6 text-sm">
-          <Link href="/">Sākums</Link>
-          <Link href="/logi">Logi</Link>
-          <Link href="/zaluzijas">Žalūzijas</Link>
-          <Link href="/piederumi">Piederumi</Link>
-          <Link href="/projekti">Projekti</Link>
-          <Link href="/par-mums">Par mums</Link>
-          <Link href="/kontakti">Kontakti</Link>
+          <Link href="/" className="hover:text-brand-teal transition-colors">Sākums</Link>
+          {/* Produkts dropdown */}
+          <div className="relative inline-block group">
+            <button className="inline-flex items-center gap-1 hover:text-brand-teal transition-colors" aria-haspopup="true" aria-expanded="false">
+              Produkti
+              <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clipRule="evenodd"/></svg>
+            </button>
+            <div className="absolute left-0 top-full w-56 bg-white border border-gray-100 rounded-md shadow-lg py-2 hidden group-hover:block">
+              <Link href="/logi" className="block px-4 py-2 hover:bg-gray-50 hover:text-brand-teal">Logu profili</Link>
+              <Link href="/zaluzijas" className="block px-4 py-2 hover:bg-gray-50 hover:text-brand-teal">Žalūzijas</Link>
+              <Link href="/piederumi" className="block px-4 py-2 hover:bg-gray-50 hover:text-brand-teal">Piederumi</Link>
+            </div>
+          </div>
+          <Link href="/projekti" className="hover:text-brand-teal transition-colors">Dzīvokļu projekti</Link>
+          <Link href="/par-mums" className="hover:text-brand-teal transition-colors">Par mums</Link>
+          <Link href="/kontakti" className="hover:text-brand-teal transition-colors">Kontakti</Link>
         </nav>
         {/* Right side actions */}
         <div className="flex items-center gap-4">
@@ -72,13 +81,14 @@ export default function Header(){
       {open && (
         <div className="md:hidden border-t border-gray-100 bg-white">
           <nav className="container py-3 grid gap-3 text-sm">
-            <Link href="/" onClick={()=>setOpen(false)}>Sākums</Link>
-            <Link href="/logi" onClick={()=>setOpen(false)}>Logi</Link>
-            <Link href="/zaluzijas" onClick={()=>setOpen(false)}>Žalūzijas</Link>
-            <Link href="/piederumi" onClick={()=>setOpen(false)}>Piederumi</Link>
-            <Link href="/projekti" onClick={()=>setOpen(false)}>Projekti</Link>
-            <Link href="/par-mums" onClick={()=>setOpen(false)}>Par mums</Link>
-            <Link href="/kontakti" onClick={()=>setOpen(false)}>Kontakti</Link>
+            <Link className="hover:text-brand-teal transition-colors" href="/" onClick={()=>setOpen(false)}>Sākums</Link>
+            <div className="text-gray-500 font-medium pt-2">Produkti</div>
+            <Link className="pl-4 hover:text-brand-teal transition-colors" href="/logi" onClick={()=>setOpen(false)}>Logu profili</Link>
+            <Link className="pl-4 hover:text-brand-teal transition-colors" href="/zaluzijas" onClick={()=>setOpen(false)}>Žalūzijas</Link>
+            <Link className="pl-4 hover:text-brand-teal transition-colors" href="/piederumi" onClick={()=>setOpen(false)}>Piederumi</Link>
+            <Link className="hover:text-brand-teal transition-colors" href="/projekti" onClick={()=>setOpen(false)}>Dzīvokļu projekti</Link>
+            <Link className="hover:text-brand-teal transition-colors" href="/par-mums" onClick={()=>setOpen(false)}>Par mums</Link>
+            <Link className="hover:text-brand-teal transition-colors" href="/kontakti" onClick={()=>setOpen(false)}>Kontakti</Link>
           </nav>
         </div>
       )}

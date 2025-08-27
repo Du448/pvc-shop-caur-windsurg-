@@ -2,6 +2,7 @@
 import { useMemo, useState } from 'react'
 import { useCart } from '@/lib/cart-context'
 import type { Product } from '@/lib/data'
+import { setSelectedProfile } from '@/lib/selection-store'
 
 type Profile = { key: string; label: string }
 type Extra = { key: string; label: string; add: number }
@@ -10,13 +11,22 @@ export default function SeriesConfigurator({
   seriesSlug,
   title,
   image,
-  basePrice = 293,
+  basePrice = 294,
 }: {
   seriesSlug: string
   title: string
   image: string
   basePrice?: number
 }){
+  const imageByProfile: Record<string, string> = {
+    'aluplast4000-2': 'https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/Logu%20profilu%20foto/aluplast-ideal-4000.jpg?updatedAt=1755884035968',
+    'aluplast4000-3': 'https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/Logu%20profilu%20foto/aluplast-ideal-4000%203%20stikli.jpg?updatedAt=1755884036029',
+    'aluplast7000-3': 'https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/Logu%20profilu%20foto/ideal-7000-3.jpg?updatedAt=1755884035885',
+    'wital7000-2': 'https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/Logu%20profilu%20foto/Wital%20prestige%207000.png?updatedAt=1755884036156',
+    'wital7000-3': 'https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/Logu%20profilu%20foto/7000_prestige-1%203333.png?updatedAt=1755884036324',
+    'wital-therm-3': 'https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/Logu%20profilu%20foto/Wital-80-1-640x640.jpg?updatedAt=1755884480903',
+    'rehau-synego-3': 'https://ik.imagekit.io/vbvwdejj5/Logu%20apdares%20foto/Logu%20profilu%20foto/Rehau-SYNEGO-1.jpg?updatedAt=1755884035921',
+  }
   const profiles: Profile[] = [
     { key: 'aluplast4000-2', label: 'Aluplast 4000 - 2 stikli' },
     { key: 'aluplast4000-3', label: 'Aluplast 4000 - 3 stikli' },
@@ -37,11 +47,22 @@ export default function SeriesConfigurator({
   const [selectedProfileIdx, setSelectedProfileIdx] = useState(0)
   const [selectedExtras, setSelectedExtras] = useState<Record<string, boolean>>({})
 
+  // Exact prices by profile
+  const profilePrices: number[] = [
+    294, // Aluplast 4000 - 2
+    350, // Aluplast 4000 - 3
+    420, // Aluplast 7000 - 3
+    296, // Wital 7000 prestige - 2
+    356, // Wital 7000 prestige - 3
+    430, // Wital prestige therm light - 3
+    520, // Rehau SYNEGO MD - 3
+  ]
+
   const price = useMemo(()=>{
-    const profileAdd = selectedProfileIdx === 0 ? 0 : 1 // any non-default profile +1€
+    const base = profilePrices[selectedProfileIdx] ?? basePrice
     const extrasAdd = Object.values(selectedExtras).filter(Boolean).length * 5
-    return basePrice + profileAdd + extrasAdd
-  },[basePrice, selectedProfileIdx, selectedExtras])
+    return base + extrasAdd
+  },[selectedProfileIdx, selectedExtras, basePrice])
 
   const { add } = useCart()
 
@@ -54,6 +75,7 @@ export default function SeriesConfigurator({
     const extrasChosen = extras.filter(e=>selectedExtras[e.key])
     // Create a unique id per configuration so items stack by exact config
     const id = `proj-103-${prof.key}-${extrasChosen.map(e=>e.key).join('_')||'none'}`
+    const previewImage = imageByProfile[prof.key] || image
     const product: Product = {
       id,
       slug: seriesSlug,
@@ -62,7 +84,7 @@ export default function SeriesConfigurator({
       description: `Profils: ${prof.label}. Papildus: ${extrasChosen.map(e=>e.label).join(', ')||'nav'}.`,
       price: price,
       category: 'logi',
-      image,
+      image: previewImage,
     }
     for(let i=0;i<qty;i++) add(product)
   }
@@ -70,7 +92,12 @@ export default function SeriesConfigurator({
   return (
     <div className="card p-4">
       <div className="mb-4">
-        <div className="h-40 md:h-48 w-full bg-cover bg-center rounded border border-gray-200" style={{backgroundImage:`url(${image})`}} />
+        <div
+          className="h-40 md:h-48 w-full bg-cover bg-center rounded border border-gray-200"
+          style={{
+            backgroundImage: `url(${imageByProfile[profiles[selectedProfileIdx]?.key] || image})`,
+          }}
+        />
       </div>
       <div className="flex items-center gap-3 mb-4">
         <div className="text-xl font-semibold">{price.toFixed(2)} €</div>
@@ -87,14 +114,17 @@ export default function SeriesConfigurator({
         <div className="font-medium mb-2">PVC logi</div>
         <div className="space-y-2">
           {profiles.map((p, idx)=> (
-            <label key={p.key} className="flex items-start cursor-pointer">
+            <label key={p.key} className="flex items-start cursor-pointer" onClick={()=>setSelectedProfile(p.key as any)}>
               <span className="w-6 shrink-0 flex items-start justify-center pt-0.5">
                 <input
                   type="radio"
                   name="profile"
                   className="radio"
                   checked={selectedProfileIdx===idx}
-                  onChange={()=>setSelectedProfileIdx(idx)}
+                  onChange={()=>{
+                    setSelectedProfileIdx(idx)
+                    setSelectedProfile(p.key as any)
+                  }}
                 />
               </span>
               <span className="ml-2 leading-snug">{p.label}</span>

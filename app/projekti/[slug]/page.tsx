@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { series } from '@/lib/series'
 import SeriesConfigurator from '@/components/SeriesConfigurator'
+import ProfileSidebarPreview from '@/components/ProfileSidebarPreview'
 
 export const dynamic = 'force-static'
 export const dynamicParams = false
@@ -61,23 +62,21 @@ export default function Page({ params }: { params: { slug: string } }){
               </div>
             )}
 
-            {item.slug === 'pvc-logi-103-serija' && (
-              <div className="mt-8">
-                <h2 className="h2 mb-4">Konfiguratori</h2>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <div key={i}>
-                      <SeriesConfigurator
-                        seriesSlug={item.slug}
-                        title={item.title}
-                        image={'https://ik.imagekit.io/vbvwdejj5/103-51-300x214.jpg?updatedAt=1756227149154'}
-                        basePrice={293}
-                      />
-                    </div>
-                  ))}
-                </div>
+            <div className="mt-8">
+              <h2 className="h2 mb-4">Konfiguratori</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {Array.from({ length: 9 }).map((_, i) => (
+                  <div key={i}>
+                    <SeriesConfigurator
+                      seriesSlug={item.slug}
+                      title={item.title}
+                      image={item.image}
+                      basePrice={293}
+                    />
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
 
           <aside>
@@ -98,6 +97,9 @@ export default function Page({ params }: { params: { slug: string } }){
             <Link href="/kontakti" className="btn w-full text-center">
               {item.ctaText ?? 'Sazināties'}
             </Link>
+
+            {/* Dynamic image preview based on selected profile */}
+            <ProfileSidebarPreview />
           </aside>
         </div>
       </div>
